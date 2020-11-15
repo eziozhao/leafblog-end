@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eziozhao.leafblog.dao.RoleDao">
+    <resultMap id="MenuMap" type="com.eziozhao.leafblog.mbg.entity.Menu">
+        <result column="parent_id" jdbcType="INTEGER" property="parentId" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    </resultMap>
+    <resultMap id="RoleMap" type="com.eziozhao.leafblog.mbg.entity.Roles">
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    </resultMap>
+    <resultMap id="ResourceMap" type="com.eziozhao.leafblog.mbg.entity.Resource">
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    </resultMap>
+    <delete id="deleteRoleRelation">
+        DELETE r.*,
+            rr.*,
+            rm.*
+        FROM roles r
+                 LEFT JOIN role_resource rr ON r.id = rr.role_id
+                 LEFT JOIN role_menu rm ON r.id = rm.role_id
+        WHERE r.id = #{roleId}
+    </delete>
+    <select id="fetchByUserId" resultMap="RoleMap">
+        SELECT r.*
+        FROM `roles` r
+                 INNER JOIN roles_user ru ON r.id = ru.rid
+        WHERE ru.uid = #{userId}
+    </select>
+    <select id="fetchMenuByRole" resultMap="MenuMap">
+        SELECT m.*
+        FROM role_menu rm
+                 INNER JOIN menu m ON rm.menu_id = m.id
+        WHERE rm.role_id = #{id}
+    </select>
+    <select id="fetchResourceByRole" resultMap="ResourceMap">
+        SELECT r.*
+        FROM resource r
+                 INNER JOIN role_resource rr ON r.id = rr.resource_id
+        WHERE rr.role_id = #{id}
+    </select>
+</mapper>

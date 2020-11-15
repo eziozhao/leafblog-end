@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eziozhao.leafblog.dao.UserDao">
+    <insert id="insertReturnId" parameterType="com.eziozhao.leafblog.mbg.entity.User" useGeneratedKeys="true"
+            keyProperty="id">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into user (username, nickname, password,
+        enabled, email, userface,
+        regTime)
+        values (#{username,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
+        #{enabled,jdbcType=INTEGER}, #{email,jdbcType=VARCHAR}, #{userface,jdbcType=VARCHAR},
+        #{regtime,jdbcType=TIMESTAMP})
+    </insert>
+    <select id="getMenuListByUserId" resultType="com.eziozhao.leafblog.mbg.entity.Menu">
+        select *
+        from menu t1
+                 left join role_menu t2 on t1.id = t2.menu_id
+                 left join roles_user t3 on t3.rid = t2.role_id
+        where t3.uid = #{userId}
+    </select>
+</mapper>

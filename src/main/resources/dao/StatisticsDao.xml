@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.eziozhao.leafblog.dao.StatisticDao">
+    <select id="getStatistics" resultType="com.eziozhao.leafblog.dto.StatParam">
+        SELECT
+            DATE_FORMAT( visit_time, '%Y-%m-%d' ) days,
+            count( 1 ) count
+        FROM
+            ( SELECT * FROM user_log WHERE DATE_SUB( CURDATE( ), INTERVAL 7 DAY ) &lt;= date( visit_time ) ) AS log
+        GROUP BY
+            days
+    </select>
+    <select id="getNums" resultType="java.lang.Integer">
+        SELECT
+            COUNT( 1 )
+        FROM
+            `user` UNION ALL
+        SELECT
+            COUNT( 1 )
+        FROM
+            article UNION ALL
+        SELECT
+            count( 1 )
+        FROM
+            user_log
+    </select>
+</mapper>

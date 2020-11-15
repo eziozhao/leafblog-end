@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eziozhao.leafblog.dao.ArticleDao">
+    <insert id="insertReturnId" parameterType="com.eziozhao.leafblog.mbg.entity.Article" useGeneratedKeys="true"
+            keyProperty="id">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into article (title, cid, uid,publishDate, editTime, state, mdContent)
+        values (#{title,jdbcType=VARCHAR}, #{cid,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER},
+        #{publishdate,jdbcType=TIMESTAMP}, #{edittime,jdbcType=TIMESTAMP}, #{state,jdbcType=INTEGER},
+        #{mdcontent,jdbcType=LONGVARCHAR})
+    </insert>
+</mapper>

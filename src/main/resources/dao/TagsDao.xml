@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eziozhao.leafblog.dao.TagsDao">
+    <insert id="insertTagsIgnoreDup">
+        INSERT IGNORE INTO tags(tagName) VALUES
+        <foreach collection="tags" item="tag" separator="," >
+            (#{tag})
+        </foreach>
+    </insert>
+    <select id="selectTagsIdByTagsName" resultType="java.lang.Integer">
+        SELECT id FROM tags WHERE tagName IN
+        <foreach collection="tagsName" item="tagName" separator="," open="(" close=")">
+            #{tagName}
+        </foreach>
+    </select>
+</mapper>
